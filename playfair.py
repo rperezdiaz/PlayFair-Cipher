@@ -1,4 +1,3 @@
-from operator import length_hint
 from textwrap import wrap
 import string
 
@@ -103,12 +102,31 @@ def encrypt(keyword:string, message:string):
         loc2 = get_location(pair[1],pf_matrix)
         # print (pair[0], loc1) ------------------------------------------------------ print letter locations
         # print (pair[1], loc2)
-        if loc1[0] == loc2[0]:
-            return
-        elif loc1[1] == loc2[1]:
-            return
-            
+        
+        if loc1[0] == loc2[0]: #letters in same row
+            r1,c1 = loc1[0],loc1[1]+1
+            r2,c2, = loc2[0],loc2[1]+1
+            #adjust indeces; 4 is the highest index in a 5x5 matrix
+            if c1 > 4: 
+                c1=0
+            if c2 > 4:
+                c2= 0
+            encrypted_message += pf_matrix[r1][c1] + pf_matrix[r2][c2]
+        elif loc1[1] == loc2[1]: #letters in same column
+            r1,c1 = loc1[0]+1,loc1[1]
+            r2,c2, = loc2[0]+1,loc2[1]
+            #adjust indices 
+            if r1 > 4: 
+                r1=0
+            if r2 > 4:
+                r2= 0
+            encrypted_message += pf_matrix[r1][c1] + pf_matrix[r2][c2]
+        else: #rectangle formed
+            r1,c1 = loc1[0],loc1[1]
+            r2,c2, = loc2[0],loc2[1]
+            encrypted_message += pf_matrix[r1][c2] + pf_matrix[r2][c1]
 
+    print(encrypted_message)
 
 def get_location(letter:string, matrix:list):
     row = 0
@@ -120,15 +138,12 @@ def get_location(letter:string, matrix:list):
             col += 1
         row += 1
     
-    return 0,0
-
-
+    return row,col
 
 #returns a string containing the plain text message
 def decipher(keyword:string, message:string):
     pf_matrix = generate_matrix(keyword)
     #TODO 
-
 
 def main():
     show_menu()
