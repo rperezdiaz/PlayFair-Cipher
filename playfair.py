@@ -96,13 +96,18 @@ def encrypt(keyword:string, message:string):
 
     #separate message into character pairs
     pairs = wrap(message, 2)
-
+    
+    encrypted_message = ""
     for pair in pairs:
         loc1 = get_location(pair[0],pf_matrix)
         loc2 = get_location(pair[1],pf_matrix)
-
-        print (pair[0], loc1)
-        print (pair[1], loc2)
+        # print (pair[0], loc1) ------------------------------------------------------ print letter locations
+        # print (pair[1], loc2)
+        if loc1[0] == loc2[0]:
+            return
+        elif loc1[1] == loc2[1]:
+            return
+            
 
 
 def get_location(letter:string, matrix:list):
