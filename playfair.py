@@ -1,4 +1,8 @@
-from textwrap import wrap
+""" 
+playfair.py 
+Author: Rey F. Pérez Díaz
+"""
+
 import string
 
 #generates a PlayFair Matrix
@@ -82,7 +86,7 @@ def process_message_string(message:string):
             message = message[:i+1] + 'X' + message[i+1:]
         i+=2
     
-    #adds 'Z' to odd length strings
+    #form pair for single letter
     if len(message) %2 != 0:
         message = message + 'Z' 
 
@@ -194,12 +198,32 @@ def decipher(keyword:string, message:string):
             deciphered_message += pf_matrix[r1][c2] + pf_matrix[r2][c1]
         
         i+=2 # evaluate next two letters
+
+    deciphered_message = remove_filler(deciphered_message)
+
     print("This is the deciphered message message:\033[96m")
     print(deciphered_message)
     print("\033[0m")
 
+def remove_filler(message:string):
+    i=0
+
+    #remove Z from adjusted single letter
+    if len(message) % 2 == 0:
+        idx = len(message)-1
+        message = message[0:idx]
+
+    #remove X between twin letters
+    while i < len(message)-2:
+        if message[i] == "X" and message[i-1] == message[i+1]:
+            message = message[:i] + message[i+1:]
+        i+=1
+
+    return message
+
 def main():
     show_menu()
-    
+
+#Starts execution of program
 if __name__ == "__main__":
     main()
