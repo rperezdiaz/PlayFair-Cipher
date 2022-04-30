@@ -79,7 +79,7 @@ def process_message_string(message:string):
         if char not in string.ascii_uppercase:
             message = message.replace(char, "")
 
-    #check pairs, add X between twin letters
+    #check pairs, add X between digraphs
     i = 0
     while i < len(message)-1:
         if message[i] == message[i+1]:
@@ -206,14 +206,13 @@ def decipher(keyword:string, message:string):
     print("\033[0m")
 
 def remove_filler(message:string):
-    i=0
-
     #remove Z from adjusted single letter
-    if len(message) % 2 == 0:
-        idx = len(message)-1
+    idx = len(message)-1
+    if len(message) % 2 == 0 and message[idx] == "Z":
         message = message[0:idx]
 
-    #remove X between twin letters
+    #remove X between digraphs
+    i=0
     while i < len(message)-2:
         if message[i] == "X" and message[i-1] == message[i+1]:
             message = message[:i] + message[i+1:]
